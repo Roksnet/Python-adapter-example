@@ -1,0 +1,66 @@
+Simple "hello, world" X-road adapter
+====================================
+
+Installation
+------------
+If you have not installed PyXadapterlib library, do it now (see ../pyxadapterlib) because it is required by this example.
+
+The following instructions assume that /usr/local/pyxadapter is path of the sandbox where PyXadapterlib has been installed.
+
+Install dependendancy packages:
+
+    sudo /usr/local/pyxadapter/bin/python setup.py develop
+
+
+Run SOAP server with pserve
+---------------------------
+
+To run SOAP server with pserve:
+
+    /usr/local/pyxadapter/bin/pserve --reload development.ini 
+
+Now you have a local SOAP server running at: http://localhost:6543/adapter
+
+WSDL file is available as: http://localhost:6543/static/hello.wsdl
+
+
+Run SOAP client
+---------------
+
+Assumed that the SOAP server is up and running in localhost (see pserve in previous section),
+open another terminal window and run the client:
+
+    /usr/local/pyxadapter/bin/python -m hello.client
+
+You should see some data retrieved from the SOAP server.
+
+Testing via security server
+---------------------------
+By default, the example service has been set up and used at localhost.
+If you like to publish services under your IP instead of localhost, edit development.ini
+and change host=0.0.0.0 into the IP by which the security server can access this server.
+Then you can configure the URLs in the data provider settings of the security server.
+
+Using pserve is simple and handy for debugging.
+For production environment it is recommendable to use Apache/mod_wsgi instead of pserve.
+For example setup, see ../example_populationdb.
+
+In order to use SOAP client with security server, edit hello/client.py and replace
+IP and URL of the security server by real settings.
+
+
+Develop X-road services
+-----------------------
+
+To create a new service in the SOAP server:
+- create service implementation function serve()
+  (example: hello/services/helloservice.py)
+- import and registrate service implementation module:
+  (hello/server.py)
+- create service description WSDL
+  (hello/static/hello.wsdl)
+- publish service in Security Server and grant access to clients
+
+To create a SOAP client:
+- add a new method for the new service and call it
+  (hello/client.py)

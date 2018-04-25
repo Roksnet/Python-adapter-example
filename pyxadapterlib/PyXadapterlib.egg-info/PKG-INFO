@@ -1,0 +1,39 @@
+Metadata-Version: 1.1
+Name: PyXadapterlib
+Version: 1.6
+Summary: X-road client/server library
+Home-page: UNKNOWN
+Author: Ahti Kelder
+Author-email: UNKNOWN
+License: UNKNOWN
+Description: Python library for implementing X-road client and server applications.
+        
+        
+        1.0
+        ---
+        
+        -  Initial version 2016-09-08
+        
+        1.2
+        ---
+        -  Small fixes 2016-11-15
+        
+        1.3
+        ---
+        -  WSDL fix 2016-12-27
+        
+        1.4
+        ---
+        -  Add demo services which update data 2017-04-23
+        
+        1.5
+        ---
+        -  Core library and examples separated 2017-09-08
+         
+        1.6
+        ---
+        -  Installation instructions for Ubuntu 16.04.3 2018-02-22
+        
+Keywords: web wsgi xroad x-tee
+Platform: UNKNOWN
+Classifier: Programming Language :: Python

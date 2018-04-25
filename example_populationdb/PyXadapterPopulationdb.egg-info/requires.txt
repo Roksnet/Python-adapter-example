@@ -1,0 +1,10 @@
+PyXadapterlib
+httplib2
+lxml
+pyramid
+pyramid_debugtoolbar
+pyramid_tm
+SQLAlchemy
+transaction
+zope.sqlalchemy
+waitress

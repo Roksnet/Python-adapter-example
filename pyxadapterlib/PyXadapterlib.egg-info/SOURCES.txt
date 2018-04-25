@@ -1,0 +1,17 @@
+CHANGES.txt
+INSTALL.txt
+LICENCE.txt
+MANIFEST.in
+README.txt
+setup.py
+PyXadapterlib.egg-info/PKG-INFO
+PyXadapterlib.egg-info/SOURCES.txt
+PyXadapterlib.egg-info/dependency_links.txt
+PyXadapterlib.egg-info/not-zip-safe
+PyXadapterlib.egg-info/requires.txt
+PyXadapterlib.egg-info/top_level.txt
+pyxadapterlib/__init__.py
+pyxadapterlib/attachment.py
+pyxadapterlib/xroadclient.py
+pyxadapterlib/xroadserver.py
+pyxadapterlib/xutils.py

@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+                  xmlns:tns="http://population.x-road.eu/producer/" 
+                  xmlns:xrd="http://x-road.eu/xsd/xroad.xsd" 
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+                  xmlns="http://schemas.xmlsoap.org/wsdl/" 
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+                  xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
+                  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
+                  targetNamespace="http://population.x-road.eu/producer/">
+  <wsdl:types>
+	<schema targetNamespace="http://population.x-road.eu/producer/" 
+            xmlns="http://www.w3.org/2001/XMLSchema">
+      
+	  <import namespace="http://x-road.eu/xsd/xroad.xsd" 
+              schemaLocation="http://x-road.eu/xsd/xroad.xsd" />
+      
+	  <complexType name="personquery_input">
+		<all>
+		  <element name="givenname" type="string">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Given name</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="surname" type="string">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Surname</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="personcode" type="string">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Person code</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="max_results" type="string">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Max number of results</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		</all>
+	  </complexType>
+      
+	  <complexType name="personquery_output">
+		<sequence>
+		  <element name="error" type="string" minOccurs="0">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Error</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="persons" minOccurs="0">
+			<complexType>
+			  <sequence>
+				<element name="person" type="tns:person" minOccurs="0" maxOccurs="unbounded"/>
+			  </sequence>
+			</complexType>
+		  </element>
+		</sequence>
+	  </complexType>
+      
+	  <complexType name="person">
+		<sequence>
+		  <element name="personcode" type="string">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Person code</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="givenname" type="string">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Given name</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="surname" type="string">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Surname</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="full_address" type="string" minOccurs="0">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Address</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="doc_no" type="string" minOccurs="0">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Doc no</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="status" type="string" minOccurs="0">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Status</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		</sequence>
+	  </complexType>
+
+	  <complexType name="detailquery_input">
+		<all>
+		  <element name="personcode" type="string">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Person code</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		</all>
+	  </complexType>
+     
+	  <complexType name="detailquery_output">
+		<sequence>
+		  <element name="error" type="string" minOccurs="0">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Error</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="person" type="tns:detailperson" minOccurs="0"/>
+		</sequence>
+	  </complexType>
+      
+	  <complexType name="detailperson">
+		<sequence>
+		  <element name="personcode" type="string">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Person code</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="givenname" type="string">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Given name</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="surname" type="string">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Surname</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="full_address" type="string" minOccurs="0">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Address</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="doc_no" type="string" minOccurs="0">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Doc no</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="status" type="string" minOccurs="0">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Status</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="photo" type="base64Binary" minOccurs="0">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Photo</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		</sequence>
+	  </complexType>
+      
+	  <complexType name="photoupdate_input">
+		<sequence>
+		  <element name="personcode" type="string">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Person code</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		  <element name="photo" type="base64Binary" minOccurs="0">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">New photo</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		</sequence>
+	  </complexType>
+      
+	  <complexType name="photoupdate_output">
+		<sequence>
+		  <element name="message" type="string">
+			<annotation>
+			  <appinfo>
+				<xrd:title xml:lang="en">Message</xrd:title>
+			  </appinfo>
+			</annotation>
+		  </element>
+		</sequence>
+	  </complexType>
+      
+      <element name="personquery">
+        <complexType>
+          <sequence>
+            <element name="request" type="tns:personquery_input"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="personqueryResponse">
+        <complexType>
+          <sequence>
+            <element name="request" type="tns:personquery_input"/>
+            <element name="response" type="tns:personquery_output"/>
+          </sequence>
+        </complexType>
+      </element>
+      
+      <element name="detailquery">
+        <complexType>
+          <sequence>
+            <element name="request" type="tns:detailquery_input"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="detailqueryResponse">
+        <complexType>
+          <sequence>
+            <element name="request" type="tns:detailquery_input"/>
+            <element name="response" type="tns:detailquery_output"/>
+          </sequence>
+        </complexType>
+      </element>
+      
+      <element name="photoupdate">
+        <complexType>
+          <sequence>
+            <element name="request" type="tns:photoupdate_input"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="photoupdateResponse">
+        <complexType>
+          <sequence>
+            <element name="response" type="tns:photoupdate_output"/>
+          </sequence>
+        </complexType>
+      </element>
+      
+    </schema>
+  </wsdl:types>
+
+  <message name="standardheader">
+    <part name="client" element="xrd:client"/>
+    <part name="service" element="xrd:service"/>
+    <part name="id" element="xrd:id"/>
+    <part name="userId" element="xrd:userId"/>
+    <part name="protocolVersion" element="xrd:protocolVersion"/>
+  </message>
+  
+  <message name="personquery">
+	<part name="body" element="tns:personquery"/>
+  </message>
+  <message name="personqueryResponse">
+	<part name="body" element="tns:personqueryResponse"/>
+  </message>
+  
+  <message name="detailquery">
+	<part name="body" element="tns:detailquery"/>
+  </message>
+  <message name="detailqueryResponse">
+	<part name="body" element="tns:detailqueryResponse"/>
+  </message>
+  
+  <message name="photoupdate">
+	<part name="body" element="tns:photoupdate"/>
+  </message>
+  <message name="photoupdateResponse">
+	<part name="body" element="tns:photoupdateResponse"/>
+  </message>
+  
+  <portType name="xport">
+	<operation name="personquery">
+	  <documentation>
+		<xrd:title xml:lang="en">Persons</xrd:title>
+	  </documentation>
+	  <input message="tns:personquery"/>
+	  <output message="tns:personqueryResponse"/>
+	</operation>
+    
+	<operation name="detailquery">
+	  <documentation>
+		<xrd:title xml:lang="en">Get photo</xrd:title>
+	  </documentation>
+	  <input message="tns:detailquery"/>
+	  <output message="tns:detailqueryResponse"/>
+	</operation>
+    
+	<operation name="photoupdate">
+	  <documentation>
+		<xrd:title xml:lang="en">Update photo</xrd:title>
+	  </documentation>
+	  <input message="tns:photoupdate"/>
+	  <output message="tns:photoupdateResponse"/>
+	</operation>
+    
+  </portType>
+  
+  <binding name="xbinding" type="tns:xport">
+	<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+	<operation name="personquery">
+	  <xrd:version>v1</xrd:version>
+	  <soap:operation soapAction="" style="document"/>
+	  <input>
+		<soap:body parts="body" use="literal"/>
+        <soap:header message="tns:standardheader" part="client" use="literal"/>
+        <soap:header message="tns:standardheader" part="service" use="literal"/>
+        <soap:header message="tns:standardheader" part="id" use="literal"/>
+        <soap:header message="tns:standardheader" part="userId" use="literal"/>
+        <soap:header message="tns:standardheader" part="protocolVersion" use="literal"/>
+	  </input>
+	  <output>
+        <soap:body parts="body" use="literal"/>
+        <soap:header message="tns:standardheader" part="client" use="literal"/>
+        <soap:header message="tns:standardheader" part="service" use="literal"/>
+        <soap:header message="tns:standardheader" part="id" use="literal"/>
+        <soap:header message="tns:standardheader" part="userId" use="literal"/>
+        <soap:header message="tns:standardheader" part="protocolVersion" use="literal"/>
+	  </output>
+	</operation>
+    
+	<operation name="detailquery">
+	  <xrd:version>v1</xrd:version>
+	  <soap:operation soapAction="" style="document"/>
+	  <input>
+		<soap:body parts="body" use="literal"/>
+        <soap:header message="tns:standardheader" part="client" use="literal"/>
+        <soap:header message="tns:standardheader" part="service" use="literal"/>
+        <soap:header message="tns:standardheader" part="id" use="literal"/>
+        <soap:header message="tns:standardheader" part="userId" use="literal"/>
+        <soap:header message="tns:standardheader" part="protocolVersion" use="literal"/>
+	  </input>
+	  <output>
+        <soap:body parts="body" use="literal"/>
+        <mime:multipartRelated>
+          <mime:part>
+            <soap:body parts="body" use="literal"/>
+            <soap:header message="tns:standardheader" part="client" use="literal"/>
+            <soap:header message="tns:standardheader" part="service" use="literal"/>
+            <soap:header message="tns:standardheader" part="id" use="literal"/>
+            <soap:header message="tns:standardheader" part="userId" use="literal"/>
+            <soap:header message="tns:standardheader" part="protocolVersion" use="literal"/>
+          </mime:part>
+          <mime:part>
+            <mime:content part="file" type="image/jpeg"/>
+          </mime:part>
+        </mime:multipartRelated>
+      </output>
+    </operation>
+    
+	<operation name="photoupdate">
+	  <xrd:version>v1</xrd:version>
+	  <soap:operation soapAction="" style="document"/>
+	  <input>
+        <soap:body parts="body" use="literal"/>
+        <mime:multipartRelated>
+          <mime:part>
+            <soap:body parts="body" use="literal"/>
+            <soap:header message="tns:standardheader" part="client" use="literal"/>
+            <soap:header message="tns:standardheader" part="service" use="literal"/>
+            <soap:header message="tns:standardheader" part="id" use="literal"/>
+            <soap:header message="tns:standardheader" part="userId" use="literal"/>
+            <soap:header message="tns:standardheader" part="protocolVersion" use="literal"/>
+          </mime:part>
+          <mime:part>
+            <mime:content part="file" type="image/jpeg"/>
+          </mime:part>
+        </mime:multipartRelated>
+	  </input>
+	  <output>
+		<soap:body parts="body" use="literal"/>
+        <soap:header message="tns:standardheader" part="client" use="literal"/>
+        <soap:header message="tns:standardheader" part="service" use="literal"/>
+        <soap:header message="tns:standardheader" part="id" use="literal"/>
+        <soap:header message="tns:standardheader" part="userId" use="literal"/>
+        <soap:header message="tns:standardheader" part="protocolVersion" use="literal"/>
+      </output>
+    </operation>
+    
+  </binding>
+  
+  <service name="population">
+	<port name="xport" binding="tns:xbinding">
+	  <soap:address location="http://proxyserver/cgi-bin/consumer_proxy"/>
+	  <xrd:title xml:lang="en">Population register</xrd:title>
+	</port>
+  </service>
+</wsdl:definitions>

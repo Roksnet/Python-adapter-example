@@ -1,0 +1,110 @@
+X-road client/server example using PyXadapterlib library
+========================================================
+
+Installation
+------------
+If you have not installed PyXadapterlib library, do it now (see ../pyxadapterlib) because it is required by this example.
+
+The following instructions assume that /usr/local/pyxadapter is path of the sandbox where PyXadapterlib has been installed.
+
+Install dependendancy packages:
+
+    sudo /usr/local/pyxadapter/bin/python setup.py develop
+
+Create SQLite database and load some initial data:
+
+    /usr/local/pyxadapter/bin/initialize_Population_db development.ini
+
+
+Run SOAP server with pserve
+---------------------------
+To run SOAP server with pserve:
+
+    /usr/local/pyxadapter/bin/pserve --reload development.ini 
+
+Now you have a local SOAP server running at:  http://localhost:6543/adapter
+
+WSDL file is available as: http://localhost:6543/static/populationdb.wsdl
+
+
+Run SOAP demo client
+--------------------
+Assumed that the SOAP server is up and running at localhost (see pserve in previous section),
+open another terminal window and run the client:
+
+    /usr/local/pyxadapter/bin/python -m populationdb.client
+
+In client window, you should see some data retrieved from the server.
+
+By default, populationdb/client.py is set to use services at localhost. 
+You can edit file to use services via security server.
+
+Install SOAP server for Apache/mod_wsgi
+---------------------------------------
+The example SOAP server is WSGI app.
+For production environment it is recommendable to use Apache/mod_wsgi instead of pserve.
+
+The following instructions have been tested in Ubuntu 16.04.3 Server.
+Install Apache and mod_wsgi:
+
+    sudo apt-get install apache2 libapache2-mod-wsgi-py3
+
+Copy database file into the place which will be accessible from the server process:
+
+    sudo mkdir /usr/local/pyxadapter/var
+    sudo cp populationdb.sqlite /usr/local/pyxadapter/var
+    sudo chown -R www-data /usr/local/pyxadapter/var
+
+Example production configuration file is populationdb.ini.
+Note that database connect string is in the configuration file:
+
+    sqlalchemy.url = sqlite:///usr/local/pyxadapter/var/populationdb.sqlite
+
+Copy configuration file into the sandbox:
+
+    sudo mkdir /usr/local/pyxadapter/etc
+    sudo cp populationdb.ini /usr/local/pyxadapter/etc
+
+Create logging directory which is described in the configuration file:
+
+    sudo mkdir /var/log/pyxadapter
+    sudo chown www-data /var/log/pyxadapter
+
+Install the package contents into the sandbox:
+
+    sudo /usr/local/pyxadapter/bin/python setup.py install
+
+Note that WSGI app (and configuration file path) is described
+in /usr/local/pyxadapter/apache/populationdb.wsgi (the file was copied by setup.py).
+
+Copy example Apache configuration and enable:
+
+    sudo cp apache/adapter.conf /etc/apache2/conf-available
+    sudo a2enconf adapter
+
+File adapter.conf describes that URL /populationdb will be alias for our WSGI app.
+You may wish to modify configuration file to restrict access to the app etc.
+
+Edit /etc/apache2/envvars, find LANG and set it's value to UTF-8 character set:
+
+    export LANG=en_US.utf8
+
+Restart Apache:
+
+    sudo service apache2 restart
+
+Now you have a local SOAP server running at: http://localhost:80/populationdb/adapter
+
+WSDL file is available as: http://localhost:80/static/populationdb.wsdl
+
+To test those services, edit populationdb/client.py and set
+xroad.security_server to 'localhost'
+xroad.security_server_uri to '/populationdb/adapter'
+
+Then run client like before:
+
+    /usr/local/pyxadapter/bin/python -m populationdb.client
+
+To provide services via X-road, configure those URLs in your security server.
+To use the services via X-road, edit populationdb/client.py and set correct values
+for security server and it's URI.

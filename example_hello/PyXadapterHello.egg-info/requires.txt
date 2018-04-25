@@ -1,0 +1,5 @@
+pyxadapterlib>=1.5
+pyramid
+pyramid_debugtoolbar
+pyramid_tm
+waitress

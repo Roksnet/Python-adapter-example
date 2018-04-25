@@ -1,0 +1,30 @@
+PyXadapterlib INSTALL
+=====================
+
+This is a library for implementing X-road SOAP server and SOAP client applications.
+
+Example installation has been tested in Ubuntu 16.04.3 Server.
+
+Install python and virtualenv if you do not have them already:
+
+    sudo apt-get install python3 virtualenv
+
+Create a python3 sandbox for PyXadapter.
+This example uses /usr/local/pyxadapter as a directory for the sandbox.
+You may replace it with some other directory if you wish.
+To create the sandbox:
+
+    sudo virtualenv -p /usr/bin/python3 /usr/local/pyxadapter
+
+Unpack pyxadapterlib package and go the folder of the library (if you are not here already):
+
+    tar xzf pyxadapterlib_*.tgz
+    cd PyXadapter/pyxadapterlib
+
+Install the library:
+
+    sudo /usr/local/pyxadapter/bin/python setup.py install
+
+Now you have the library installed.
+The library itself does not provide any services.
+For example usage of the library, see examples in the parent directory.

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+                  xmlns:tns="http://hello.x-road.eu/producer/" 
+                  xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+                  xmlns="http://schemas.xmlsoap.org/wsdl/" 
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+                  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
+                  targetNamespace="http://hello.x-road.eu/producer/">
+  <wsdl:types>
+    <schema targetNamespace="http://hello.x-road.eu/producer/" 
+            xmlns="http://www.w3.org/2001/XMLSchema">
+      
+      <import namespace="http://x-road.eu/xsd/xroad.xsd" 
+              schemaLocation="http://x-road.eu/xsd/xroad.xsd" />
+      
+      <element name="helloservice">
+        <complexType>
+          <sequence>
+            <element name="request" type="string">
+              <annotation>
+                <appinfo>
+                  <xrd:title xml:lang="en">My name:</xrd:title>
+                </appinfo>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      
+      <element name="helloserviceResponse">
+        <complexType>
+          <sequence>
+            <element name="request" type="string">
+              <annotation>
+                <appinfo>
+                  <xrd:title xml:lang="en">Parameter was:</xrd:title>
+                </appinfo>
+              </annotation>
+            </element>
+            <element name="response" type="string">
+              <annotation>
+                <appinfo>
+                  <xrd:title xml:lang="en">Adapter said:</xrd:title>
+                </appinfo>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      
+    </schema>
+  </wsdl:types>
+  
+  <message name="standardheader">
+    <part name="client" element="xrd:client"/>
+    <part name="service" element="xrd:service"/>
+    <part name="id" element="xrd:id"/>
+    <part name="userId" element="xrd:userId"/>
+    <part name="protocolVersion" element="xrd:protocolVersion"/>
+  </message>
+  
+  <message name="helloservice">
+    <part name="body" element="tns:helloservice"/>
+  </message>
+  <message name="helloserviceResponse">
+    <part name="body" element="tns:helloserviceResponse"/>
+  </message>
+  
+  <portType name="xport">
+    <operation name="helloservice">
+      <documentation>
+        <xrd:title xml:lang="en">Hello service</xrd:title>
+      </documentation>
+      <input message="tns:helloservice"/>
+      <output message="tns:helloserviceResponse"/>
+    </operation>
+  </portType>
+  
+  <binding name="xbinding" type="tns:xport">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    
+    <operation name="helloservice">
+      <xrd:version>v1</xrd:version>
+      <soap:operation soapAction="" style="document"/>
+      
+      <input>
+        <soap:body parts="body" use="literal"/>
+        <soap:header message="tns:standardheader" part="client" use="literal"/>
+        <soap:header message="tns:standardheader" part="service" use="literal"/>
+        <soap:header message="tns:standardheader" part="id" use="literal"/>
+        <soap:header message="tns:standardheader" part="userId" use="literal"/>
+        <soap:header message="tns:standardheader" part="protocolVersion" use="literal"/>
+      </input>
+      <output>
+        <soap:body parts="body" use="literal"/>
+        <soap:header message="tns:standardheader" part="client" use="literal"/>
+        <soap:header message="tns:standardheader" part="service" use="literal"/>
+        <soap:header message="tns:standardheader" part="id" use="literal"/>
+        <soap:header message="tns:standardheader" part="userId" use="literal"/>
+        <soap:header message="tns:standardheader" part="protocolVersion" use="literal"/>
+      </output>
+    </operation>
+    
+  </binding>
+  
+  <service name="hello">
+    <port name="xport" binding="tns:xbinding">
+      <soap:address location="http://proxyserver/cgi-bin/consumer_proxy"/>
+      <xrd:title xml:lang="en">Hello demo</xrd:title>
+    </port>
+  </service>
+</wsdl:definitions>
