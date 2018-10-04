@@ -22,3 +22,7 @@
 1.7
 ---
 -  Installation instructions for Ubuntu 16.04.3, chunked encoding 2018-03-01
+
+1.8
+---
+-  Client config changed, fix encoding 2018-08-31

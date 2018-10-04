@@ -15,7 +15,7 @@ requires = [
     ]
 
 setup(name='PyXadapterlib',
-      version='1.7',
+      version='1.8',
       description='X-road client/server library',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[

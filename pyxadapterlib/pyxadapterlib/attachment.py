@@ -182,13 +182,14 @@ def decode(response):
                 attachments.append(attachment)
     else:
         # plain message
-        env = msg.get_payload()
-        
+        env = msg.get_payload(decode=True)
         if not env and response:
            # probably XML declaration is missing
            env = response
         else:
            # remove crap (HTTPS)
+           if isinstance(env, bytes):
+               env = env.decode('utf-8')
            n1 = env.find('<?xml')
            n2 = env.rfind('>')
            if n1 > -1 and n2 > -1:

@@ -66,44 +66,50 @@ class XroadClient(object):
             
         if settings:
             self.settings = settings
-            def get_db_setting(key, db):
-                return settings.get('%s.xroad.%s' % (db, key))
-
-            def get_setting(key, db):
-                return get_db_setting(key, db) or settings.get('xroad.%s' % key)
 
             db = self.producer
 
-            # consumer data
-            self._caller = dict(
-                xRoadInstance = get_setting('client.xRoadInstance', db),
-                memberClass = get_setting('client.memberClass', db),
-                memberCode = get_setting('client.memberCode', db),
-                subsystemCode = get_setting('client.subsystemCode', db),
-                )
-
-            # provider data
-            self._service = dict(
-                xRoadInstance = get_db_setting('xRoadInstance', db) or self._caller['xRoadInstance'],
-                memberClass = get_db_setting('memberClass', db),
-                memberCode = get_db_setting('memberCode', db),
-                subsystemCode = get_db_setting('subsystemCode', db),
-                )
-            self._consumer = get_setting('consumer', db)
-            self._producer = get_setting('producer', db) or db           
+            self._caller = self._get_client_data(db)
+            self._service = self._get_server_data(db)
+            self._consumer = self._get_setting('consumer', db)
+            self._producer = self._get_setting('producer', db) or db           
             
-            self.security_server = get_setting('security_server', db)
-            self.security_server_uri = get_setting('security_server_uri', db) or \
+            self.security_server = self._get_setting('security_server', db)
+            self.security_server_uri = self._get_setting('security_server_uri', db) or \
                                        self.security_server_uri
 
-            self.key = get_setting('key', db)
-            self.cert = get_setting('cert', db)
+            self.key = self._get_setting('key', db)
+            self.cert = self._get_setting('cert', db)
             
-            self.log_dir = get_setting('log_dir', db)
+            self.log_dir = self._get_setting('log_dir', db)
         else:
             self.security_server = security_server
 
         self.userId = userId
+
+    def _get_client_data(self, db):
+        # consumer's data in header
+        return dict(
+            xRoadInstance = self._get_setting('client.xRoadInstance', db),
+            memberClass = self._get_setting('client.memberClass', db),
+            memberCode = self._get_setting('client.memberCode', db),
+            subsystemCode = self._get_setting('client.subsystemCode', db),
+            )
+    
+    def _get_server_data(self, db):
+        # provider's data in header
+        return dict(
+            xRoadInstance = self._get_db_setting('xRoadInstance', db) or self._caller['xRoadInstance'],
+            memberClass = self._get_db_setting('memberClass', db),
+            memberCode = self._get_db_setting('memberCode', db),
+            subsystemCode = self._get_db_setting('subsystemCode', db),
+            )
+        
+    def _get_db_setting(self, key, db):
+        return self.settings.get('%s.xroad.%s' % (db, key))
+
+    def _get_setting(self, key, db):
+        return self._get_db_setting(key, db) or self.settings.get('xroad.%s' % key)
 
     def allowedMethods(self):
         "Ask list of permitted services"
