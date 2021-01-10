@@ -1,6 +1,10 @@
-CONTENTS
+Example X-road services with Python and SOAP
+============================================
 
-This folder contains a X-road library and examples which demonstrate usage of the library.
+CONTENTS
+--------
+
+This folder contains a X-road SOAP library and examples which demonstrate usage of the library.
 
 Directory pyxadapterlib contains Python3 library for building X-road clients and servers. 
 
@@ -11,6 +15,7 @@ Directory example_populationdb contains an example which demonstrates X-road ser
 with more practical and complicated needs (use of database, complex input/output data structures etc).
 
 INSTALLATION
+------------
 
 Each subfolder contains file named INSTALL.txt with installation instructions.
 Installation should be started from the pyxadapterlib directory.
