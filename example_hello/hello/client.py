@@ -40,25 +40,19 @@ if __name__ == '__main__':
 
         # directory where to log input and output messages
         'xroad.log_dir': 'tmp',
-        # global settings for X-road protocol 4.0 (<client> header):
-        'xroad.client.xRoadInstance': 'roksnet-dev',
-        'xroad.client.memberClass': 'COM',
-        'xroad.client.memberCode': '12998179',
-        'xroad.client.subsystemCode': 'roksnet-consumer',
-        # hello settings for X-road protocol 4.0 (<service> header)
-        'hello.xroad.xRoadInstance': 'roksnet-dev',
-        'hello.xroad.memberClass': 'COM',
-        'hello.xroad.memberCode': '12998179',
-        'hello.xroad.subsystemCode': 'hello',
+        # X-road protocol 4.0 <client> header values as xRoadInstance/memberClass/memberCode/subsystemCode
+        'xroad.client': 'roksnet-dev/COM/12998179/roksnet-consumer',
+        # hello settings for X-road protocol 4.0 <service> header as xRoadInstance/memberClass/memberCode/subsystemCode
+        'xroad.server.hello': 'roksnet-dev/COM/12998179/hello',
         }
-    userId = 'EE30101010007' # authenticated user's country code + personcode
+    userId = 'EE30101010007' # authenticated user's country code + person code
 
     # Service client
     reg = HelloClient(userId=userId, settings=settings)
 
     try:
         # call helloservice service
-        res = reg.helloservice('Jaan')
+        res = reg.helloservice('World')
         pprint.pprint(res)
 
     except SoapFault as e:

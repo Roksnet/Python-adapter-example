@@ -1,4 +1,4 @@
-"MIME handling"
+"MIME envelope handling"
 
 import base64
 from io import BytesIO
@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 # as X-road protocol 4.0 insists using 8bit encoding for SOAP envelope parts
 charset.add_charset('utf-8', charset.SHORTEST, '8bit')
 
-class Attachment(object):
+class Attachment:
     "MIME attachment in X-road SOAP message"
     filename = None
     content_id = None
@@ -160,18 +160,12 @@ def decode(response):
             ctype = part.get('Content-Type')
             if part.get('Content-Transfer-Encoding') == 'base64':
                 bdata = base64.b64decode(data.encode('utf-8'))
-            elif ctype.find('base64Binary') > -1:
-                # DVK uses Content-Transfer-Encoding="binary"
-                # and Content-Type="{http://www.w3.org/2001/XMLSchema}base64Binary"
-                # for base64-encoded and gzipped data
-                bdata = base64.b64decode(data.encode('utf-8'))
 
             if bdata and part.get('Content-Encoding') == 'gzip':
                 bdata = gunzip(bdata)
 
             if bdata:
                 data = bdata
-                #data = bdata.decode('utf-8')
 
             if not env:
                 # assume that first part is SOAP envelope
@@ -184,17 +178,17 @@ def decode(response):
         # plain message
         env = msg.get_payload(decode=True)
         if not env and response:
-           # probably XML declaration is missing
-           env = response
+            # probably XML declaration is missing
+            env = response
         else:
-           # remove crap (HTTPS)
-           if isinstance(env, bytes):
-               env = env.decode('utf-8')
-           n1 = env.find('<?xml')
-           n2 = env.rfind('>')
-           if n1 > -1 and n2 > -1:
-               env = env[n1:n2+1]
-
+            # remove crap (HTTPS)
+            if isinstance(env, bytes):
+                env = env.decode('utf-8')                
+            n1 = env.find('<?xml')
+            n2 = env.rfind('>')
+            if n1 > -1 and n2 > -1:
+                env = env[n1:n2+1]
+                
     return env, attachments
 
 def gzip(data, compresslevel=9):

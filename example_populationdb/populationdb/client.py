@@ -28,8 +28,8 @@ class PopulationdbClient(XroadClient):
         # (should be parsed as a list)
         list_path = ['/response/persons/person',]
         # call the service
-        res = self.call('personquery', params, list_path=list_path)
-        # res is dict of response data
+        res = self.call('personquery', params, list_path)
+        # res is Xresult object containing response data
         return res
 
     def detailquery(self, personcode):
@@ -39,7 +39,7 @@ class PopulationdbClient(XroadClient):
         params = E.Request(request)
         # call the service
         res = self.call('detailquery', params)
-        # res is dict of response data
+        # res is Xresult object containing response data        
         return res, self.response_attachments
 
 if __name__ == '__main__':
@@ -63,39 +63,36 @@ if __name__ == '__main__':
 
         # directory where to log input and output messages
         'xroad.log_dir': 'tmp',
-        # global settings for X-road protocol 4.0 (<client> header):
-        'xroad.client.xRoadInstance': 'roksnet-dev',
-        'xroad.client.memberClass': 'COM',
-        'xroad.client.memberCode': '12998179',
-        'xroad.client.subsystemCode': 'roksnet-consumer',
-        # populationdb settings for X-road protocol 4.0 (<service> header)
-        'population.xroad.xRoadInstance': 'roksnet-dev',
-        'population.xroad.memberClass': 'COM',
-        'population.xroad.memberCode': '12998179',
-        'population.xroad.subsystemCode': 'population',
+        # settings for X-road protocol 4.0 <client> header as xRoadInstance/memberClass/memberCode/subsystemCode
+        'xroad.client': 'roksnet-dev/COM/12998179/roksnet-consumer',
+        # populationdb settings for X-road protocol 4.0 <service> header as xRoadInstance/memberClass/memberCode/subsystemCode
+        'xroad.server.population': 'roksnet-dev/COM/12998179/population',
         }
-    userId = 'EE30101010007' # authenticated user's country code + personcode, replace with your data
+    userId = 'EE30101010007' # authenticated user's country code + person code, REPLACE WITH YOUR DATA ABOUT AUTHENTICATED USER!
 
     # Service client
     reg = PopulationdbClient(userId=userId, settings=settings)
 
     try:
+        # Call X-road service to find person code
         print('Call personquery...')
         res = reg.personquery(None, 'H%', None)
         pprint.pprint(res)
-
+        persons = res.find('response/persons/person')
         try:
             # find first person in response list
-            first_person = res['response']['persons']['person'][0]
+            first_person = persons[0]
         except:
             print('No persons found')
         else:
             personcode = first_person['personcode']
+
+            # Call X-road service to get details about given person
             print('Call detailquery for %s...' % personcode)
             res, attachments = reg.detailquery(personcode)
             pprint.pprint(res)
             for att in attachments:
-                # save attachment
+                # save attachment somewhere, for simplicity we will use log directory 
                 prefix = make_log_day_path(settings['xroad.log_dir'])
                 fn = '%s.%s' % (prefix, att.filename)
                 with open(fn, 'wb') as file:

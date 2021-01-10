@@ -29,7 +29,7 @@ def serve(wrapper, header=None, attachments=[], context=None):
         p = q.first()
         att = attachments[0]
         p.photo = att.data
-        transaction.commit()
+        DBSession.commit()
         message = 'File saved successfully'
 
     res = E.response(E.message(error or message))

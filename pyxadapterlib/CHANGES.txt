@@ -26,3 +26,17 @@
 1.8
 ---
 -  Client config changed, fix encoding 2018-08-31
+
+1.9
+---
+-  Introduce Xresult class for more convenient handling of input data instead of a dict
+-  Config file syntax changes:
+      Configure xRoadInstance/memberClass/memberCode/subsystemCode on a single row
+   	  For individual DB options, change DB.xroad.key into xroad.key.DB
+-  Option of using HTTP proxy
+-  Remove support for X-road protocol ver 3
+-  Modified arguments of XroadClient.call()
+-  Fix encoding issue
+-  Added XroadClient log method (to be overloaded in inherited classes)
+-  Modified arguments of XroadServer.dispatch() 
+-  Modified 2020-12-30

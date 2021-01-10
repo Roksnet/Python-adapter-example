@@ -31,7 +31,7 @@ def serve(wrapper, header=None, attachments=[], context=None):
     if not personcode and not surname:
         error = 'Parameters are missing or invalid.'
     elif q.count() == 0:
-        error = 'No data match you query. Use % instead of surname to get some demo data.'
+        error = 'No data match your query. Use % in place of surname to get some demo data.'
 
     if error:
         res = E.response(E.error(error))

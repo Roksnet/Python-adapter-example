@@ -7,7 +7,7 @@ If you have not installed PyXadapterlib library, do it now (see ../pyxadapterlib
 
 The following instructions assume that /usr/local/pyxadapter is path of the sandbox where PyXadapterlib has been installed.
 
-Install dependendancy packages:
+Install dependency packages:
 
     sudo /usr/local/pyxadapter/bin/python setup.py develop
 
@@ -47,7 +47,10 @@ For production environment it is recommendable to use Apache/mod_wsgi instead of
 The following instructions have been tested in Ubuntu 16.04.3 Server.
 Install Apache and mod_wsgi:
 
-    sudo apt-get install apache2 libapache2-mod-wsgi-py3
+    sudo apt-get install apache2
+    sudo pip install mod_wsgi
+    mod_wsgi-express module-config > /etc/apache2/mods-available/wsgi.load
+    a2enmod wsgi
 
 Copy database file into the place which will be accessible from the server process:
 

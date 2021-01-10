@@ -1,12 +1,11 @@
 Metadata-Version: 1.1
 Name: PyXadapterHello
-Version: 1.5
+Version: 1.7
 Summary: X-road demo adapter
 Home-page: UNKNOWN
 Author: Ahti Kelder
 Author-email: UNKNOWN
 License: UNKNOWN
-Description-Content-Type: UNKNOWN
 Description: Simple "hello, world" X-road adapter using PyXadapterlib library
         
         
@@ -14,6 +13,11 @@ Description: Simple "hello, world" X-road adapter using PyXadapterlib library
         ---
         
         -  Initial version 2017-09-08
+        
+        1.7
+        ---
+        
+        -  Modified pyxadapterlib
         
 Keywords: web wsgi xroad
 Platform: UNKNOWN

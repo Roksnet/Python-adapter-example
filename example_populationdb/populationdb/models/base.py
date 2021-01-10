@@ -28,9 +28,6 @@ from sqlalchemy.orm import (
     mapper,
     )
 
-from zope.sqlalchemy import ZopeTransactionExtension
-import transaction
-
-DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
+DBSession = scoped_session(sessionmaker(autoflush=False))
 Base = declarative_base()
 

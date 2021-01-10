@@ -35,7 +35,7 @@ def adapter(request):
         DBSession.remove()
         log.error(msg + '\n' + traceback.format_exc())
         
-    return srv.dispatch(request, _error_handler)
+    return srv.dispatch(request, error_handler=_error_handler)
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application to run a SOAP server.

@@ -4,14 +4,16 @@ from lxml import etree
 from lxml.builder import ElementMaker
 from datetime import datetime, date
 import os
+import re
 import stat
 import binascii
+import shutil
 from datetime import datetime
 
 import logging
 log = logging.getLogger(__name__)
 
-class NS(object):
+class NS:
     "Namespace constants"
     XSD = "http://www.w3.org/2001/XMLSchema"
     XSI = "http://www.w3.org/2001/XMLSchema-instance"
@@ -23,9 +25,6 @@ class NS(object):
     SOAP12 = 'http://www.w3.org/2003/05/soap-env'
     SOAPENV = 'http://schemas.xmlsoap.org/soap/envelope/'
     _SOAPENV = '{' + SOAPENV + '}'
-    
-    XROAD3 = 'http://x-road.ee/xsd/x-road.xsd'
-    _XROAD3 = '{%s}' % XROAD3
     XROAD4 = 'http://x-road.eu/xsd/xroad.xsd'
     _XROAD4 = '{%s}' % XROAD4
     XROAD4ID = 'http://x-road.eu/xsd/identifiers'
@@ -95,41 +94,97 @@ def get_date(request, key):
     value = get_text(request, key)
     return date_from_iso(value)
 
+def get_datetime(request, key):
+    "Get datetime value of a XML element"
+    value = get_text(request, key)
+    return datetime_from_iso(value)
+
 def date_from_iso(value):
     if value:
         return date(*map(int, re.split('[^\d]', value)[:3]))    
+
+def datetime_from_iso(value):
+    if value:
+        # "2008-09-03T20:56:35.450686Z"
+        return datetime(*map(int, re.split('[^\d]', value)[:-1]))
 
 def outer_xml(element, xml_declaration=False):
     "Convert XML object into string"
     buf = etree.tostring(element, xml_declaration=xml_declaration, method='xml', pretty_print=True, encoding='UTF-8')
     return buf.strip().decode('utf-8')
 
-def tree_to_dict(root, path='', list_path=[]):
-    """Convert XML object into dict 
+class Xresult:
+    "Class for convenient handling of XML data received from other party"
+    def __init__(self, **attrs):
+        for key in attrs:
+            setattr(self, key, attrs[key])
+            
+    def __getattr__(self, name):
+        # avoid exceptions when attribute does not exist
+        if name in self.__dict__:
+            return self.__dict__[name]
+        return None
+
+    def __getitem__(self, name):
+        # make it subscriptable
+        return getattr(self, name)
+
+    def asdict(self):
+        d = {}
+        for key, value in list(self.__dict__.items()):
+            if isinstance(value, Xresult):
+                d[key] = value.asdict()
+            else:
+                d[key] = value
+        return d
+    
+    def __repr__(self):
+        return repr(self.asdict())
+
+    def find(self, keys):
+        """Traverse tree of children, format of keys is:
+        attr1/subattr2/subsubattr3/.../subattrN
+        """
+        item = self
+        for key in keys.split('/'):
+            if not item:
+                return None
+            item = getattr(item, key)
+        return item
+    
+def tree_to_xresult(root, path='', list_path=[]):
+    """Convert XML data into Xresult 
     - path - path of current element
     - list_path - list of pathes to elements which should be converted as list
       (because element may occur more than once)
     """
-    res = dict()
+    res = Xresult()
     for node in root.getchildren():
-        tag = node.tag.split('}')[-1]
-        subpath = path + '/' + tag
-        subdict = tree_to_dict(node, subpath, list_path)
-        if subpath in list_path:
-            # is list
-            if not tag in res:
-                res[tag] = []
-            res[tag].append(subdict)
+        try:
+            tag = node.tag.split('}')[-1]
+        except:
+            # maybe Comment
+            pass
         else:
-            if tag in res:
-                log.error('Element occurs multiple times but not defined as a list: ' + subpath)
-            res[tag] = subdict
-    if not res:
+            subpath = path + '/' + tag
+            subresult = tree_to_xresult(node, subpath, list_path)
+            if list_path and subpath in list_path:
+                # is list
+                if getattr(res, tag) is None:
+                    setattr(res, tag, [])
+                getattr(res, tag).append(subresult)
+            else:
+                if getattr(res, tag) is not None:
+                    log.error('Element occurs multiple times but not defined as a list: ' + subpath)
+                setattr(res, tag, subresult)
+    if not res.__dict__:
         # simpletype
         res = root.text
+        if res:
+            res = res.strip()
     return res
 
-def make_log_day_path(log_dir):
+def make_log_day_path(log_dir, user=None):
     "Create directory for logging the messages"
     if log_dir:
         dt = datetime.now()
@@ -139,5 +194,10 @@ def make_log_day_path(log_dir):
         if not os.path.exists(path):
             os.makedirs(path)
             os.chmod(path, stat.S_IRWXU | stat.S_IRWXG | stat.S_IXOTH | stat.S_IROTH)
+            if user:
+                try:
+                    shutil.chown(path, user)
+                except:
+                    pass
         prefix = '%s/%s' % (path, stime)
         return prefix

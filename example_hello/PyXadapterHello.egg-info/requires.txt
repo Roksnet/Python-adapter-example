@@ -1,4 +1,4 @@
-pyxadapterlib>=1.5
+pyxadapterlib>=1.7
 pyramid
 pyramid_debugtoolbar
 pyramid_tm

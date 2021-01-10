@@ -37,7 +37,5 @@ class Document(ABase):
     def doc_type_name(self):
         if self.doc_type == 1:
             return 'ID card'
-        elif self.doc_type == 2:
-            return 'Passport'
         else:
             return 'Passport'

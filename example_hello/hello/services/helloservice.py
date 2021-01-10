@@ -8,6 +8,6 @@ def serve(wrapper, header=None, attachments=[], context=None):
         raise SoapFault('Server.Adapter.Error',
                         'Request parameter is missing')
     name = request.text or 'world'
-    res = E.response('Hello, %s' % name)
+    res = E.response(f'Hello, {name}')
     return E.Response(request, res), []
 

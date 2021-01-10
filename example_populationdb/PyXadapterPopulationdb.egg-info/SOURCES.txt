@@ -13,7 +13,7 @@ PyXadapterPopulationdb.egg-info/entry_points.txt
 PyXadapterPopulationdb.egg-info/not-zip-safe
 PyXadapterPopulationdb.egg-info/requires.txt
 PyXadapterPopulationdb.egg-info/top_level.txt
-apache/adapter.wsgi
+apache/populationdb.wsgi
 populationdb/__init__.py
 populationdb/client.py
 populationdb/server.py
@@ -21,8 +21,11 @@ populationdb/models/__init__.py
 populationdb/models/base.py
 populationdb/models/populationdb.py
 populationdb/scripts/__init__.py
+populationdb/scripts/init_photo.jpg
+populationdb/scripts/init_signature.jpg
 populationdb/scripts/initializedb.py
 populationdb/services/__init__.py
 populationdb/services/detailquery.py
 populationdb/services/personquery.py
 populationdb/services/photoupdate.py
+populationdb/static/populationdb.wsdl

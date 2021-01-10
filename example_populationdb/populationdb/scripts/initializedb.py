@@ -46,7 +46,7 @@ def init_population(engine):
     item = Person(givenname='EDMUND',
                   surname='HACTENUS',
                   personcode='37001196628',
-                  full_address='JÄRVA MAAKOND, PAIDE LINN, RISTMIKU TN 25A',
+                  full_address='JÄRVA MAAKOND, PAIDE LINN, KESKÖÖ TN 25A',
                   docno='29342429',
                   status='E',
                   birthdate=date(1970,1,19),
@@ -67,8 +67,8 @@ def init_population(engine):
                   surname='HUQUAESTUM',
                   personcode='45803029574',
                   birthdate=date(1958,3,2),
-                  full_address='TARTU MAAKOND, TARTU LINN, KARUKÜLA TEE 14',
-                  docno='29342429',
+                  full_address='TARTU MAAKOND, TARTU LINN, MESIJUTU TN 14',
+                  docno='31002000',
                   status='E',
                   photo=photo,
                   signature=signature,
@@ -83,4 +83,4 @@ def init_population(engine):
                              ],
                   )
     DBSession.add(item)    
-    transaction.commit()
+    DBSession.commit()

@@ -21,7 +21,7 @@ def serve(wrapper, header=None, attachments=[], context=None):
         error = 'Parameter is missing'
 
     if not error and q.count() == 0:
-        error = 'No data match you query.'
+        error = 'No data match your query.'
 
     if error:
         res = E.response(E.error(error))
