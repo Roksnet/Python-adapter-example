@@ -1,18 +1,23 @@
 Example X-road services with Python and SOAP
 ============================================
 
+This folder contains a X-road SOAP library and examples which demonstrate usage of the library.
+
+The library and examples here are using X-road SOAP interface.
+For development of services using X-road REST interface (not SOAP),
+see https://github.com/Roksnet/Python-json-adapter-hello
+and https://github.com/Roksnet/Python-json-adapter-sqla  instead.
+
 CONTENTS
 --------
 
-This folder contains a X-road SOAP library and examples which demonstrate usage of the library.
+* Directory pyxadapterlib contains Python3 library for building X-road clients and servers. 
 
-Directory pyxadapterlib contains Python3 library for building X-road clients and servers. 
+* Directory example_hello contains a simple example service (client and server),
+  which demostrates the main idea of using the library.
 
-Directory example_hello contains a simple example service (client and server),
-which demostrates the main idea of using the library.
-
-Directory example_populationdb contains an example which demonstrates X-road services
-with more practical and complicated needs (use of database, complex input/output data structures etc).
+* Directory example_populationdb contains an example which demonstrates X-road services
+  with more practical and complicated needs (use of database, complex input/output data structures etc).
 
 INSTALLATION
 ------------
